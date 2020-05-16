@@ -1,22 +1,32 @@
 import React, {useState} from "react";
 import {Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import {Auth} from "aws-amplify";
 import "./Login.css";
 
 export default function Login() {
-    // Email state management 
-    const [email, setEmail] = useState("");
+    // Username state management 
+    const [username, setUser] = useState("");
 
     // Password state management 
     const [password, setPassword] = useState("");
 
     // Ensure all forms are filled correctly
     function validateForm() {
-        return email.length > 0 && password.length > 0;
+        return username.length > 0 && password.length > 0;
     }
 
     // Submit login information 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
+
+        try {
+            const user = await Auth.signIn(username, password);
+            alert ("Logged in successfully");
+            console.log(user);
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 
     // Login component structure
@@ -24,13 +34,12 @@ export default function Login() {
         <div className="Login">
             <form onSubmit={handleSubmit}>
 
-                {/* Email Form */}
+                {/* Username Form */}
                 <FormGroup controlId="email" bsSize="large">
-                    <ControlLabel>Email</ControlLabel>
+                    <ControlLabel>Username</ControlLabel>
                     <FormControl 
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={username}
+                        onChange={e => setUser(e.target.value)}
                         autoFocus
                     />
                 </FormGroup>
