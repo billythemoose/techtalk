@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {Auth} from "aws-amplify";
 import "./Login.css";
 
@@ -35,24 +35,24 @@ export default function Login() {
             <form onSubmit={handleSubmit}>
 
                 {/* Username Form */}
-                <FormGroup controlId="email" bsSize="large">
-                    <ControlLabel>Username</ControlLabel>
-                    <FormControl 
+                <Form.Group controlId="email" bsSize="large">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control 
                         value={username}
                         onChange={e => setUser(e.target.value)}
                         autoFocus
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Password Form */}
-                <FormGroup controlId="password" bsSize="large">
-                    <ControlLabel>Password</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="password" bsSize="large">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Submit button */}
                 <Button 

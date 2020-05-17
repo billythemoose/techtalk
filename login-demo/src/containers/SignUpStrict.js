@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import {Button, Form, Col} from "react-bootstrap";
 import {Auth} from "aws-amplify";
 import "./Login.css";
 
@@ -35,7 +35,7 @@ export default function SignUpStrict() {
     const [postal, setPostal] = useState("");
 
     // Country address state management 
-    const [country, setCountry] = useState("");
+    // const [country, setCountry] = useState("");
 
     
     // Ensure all forms are filled correctly
@@ -88,39 +88,30 @@ export default function SignUpStrict() {
         event.preventDefault();
 
         const add = {
-            street_address: "fdsa",
-            locality: "Renton",
-            region: "WA",
-            postal_code: "98055",
+            street_address: street,
+            locality: locality,
+            region: region,
+            postal_code: postal,
             country: "United States of America"
         } 
 
         try {
-            /*
-            const user = await Auth.signUp({
-                email,
-                password,
-                attributes: {
-                    name: name, 
-                    preferred_username: username, 
-                    birthdate: birthdate, 
-                    phone_number: phone, 
-                    address: street 
-                }
-            });
-            */
-           const user = await Auth.signUp({
+            
+            const signup = {
                 username: email,
                 password: password,
                 attributes: {
                     email: email,
-                    name: "Michael Thomas", 
-                    preferred_username: "billythemoose", 
-                    birthdate: "11/29/1991", 
-                    phone_number: "+1234567890", 
-                    address: JSON.stringify(add)
+                    name: name, 
+                    preferred_username: username, 
+                    birthdate: birthdate, 
+                    phone_number: `+${phone}`, 
+                    address: JSON.stringify(add) 
                 }
-            });
+            };            
+            
+            const user = await Auth.signUp(signup);
+
             alert ("Logged in successfully");
             console.log(user);
         }
@@ -135,67 +126,105 @@ export default function SignUpStrict() {
             <form onSubmit={handleSubmit}>
 
                 {/* Email Form */}
-                <FormGroup controlId="email" bsSize="large">
-                    <ControlLabel>Email</ControlLabel>
-                    <FormControl 
+                <Form.Group controlId="email" >
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control 
                         type={email}
                         value={email}
                         onChange={e => setUser(e.target.value)}
                         autoFocus
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Password Form */}
-                <FormGroup controlId="password" bsSize="large">
-                    <ControlLabel>Password</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="password" >
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
                         type="password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Name Form */}
-                <FormGroup controlId="name" bsSize="large">
-                    <ControlLabel>Name</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="name" >
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
                         value={name}
                         onChange={e => setName(e.target.value)}
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Username Form */}
-                <FormGroup controlId="username" bsSize="large">
-                    <ControlLabel>Username</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="username" >
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
-                </FormGroup>
+                </Form.Group>
 
                 {/* Birthdate Form */}
-                <FormGroup controlId="birthdate" bsSize="large">
-                    <ControlLabel>Birthdate</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="birthdate">
+                    <Form.Label>Birthdate</Form.Label>
+                    <Form.Control
                         type="date"
                         value={birthdate}
                         onChange={e => setBirthdate(e.target.value)}
+                        size="lg"
                     />
-                </FormGroup>
+                </Form.Group>
                 
                 {/* Phone Form */}
-                <FormGroup controlId="password" bsSize="large">
-                    <ControlLabel>Password</ControlLabel>
-                    <FormControl
+                <Form.Group controlId="phone" >
+                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Control
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
                     />
-                </FormGroup>
+                </Form.Group>
+
+                <Form.Group controlId="formGridAddress1">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control 
+                        placeholder="1234 Main St" 
+                        value={street} 
+                        onChange={e => setStreet(e.target.value)}
+                    />
+                </Form.Group>
+
+                {/* Address Form */}
+                <Form.Row>
+                    <Form.Group as={Col} controlId="formGridCity">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control 
+                        value={locality}
+                        onChange={e => setLocality(e.target.value)}
+                    />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridState">
+                    <Form.Label>State</Form.Label>
+                    <Form.Control as="select"
+                        value={region} 
+                        onChange={e => setRegion(e.target.value)}>
+                        <option>WA</option>
+                    </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridZip">
+                    <Form.Label>Zip</Form.Label>
+                    <Form.Control 
+                        value={postal}
+                        onChange={e => setPostal(e.target.value)}
+                    />
+                    </Form.Group>
+                </Form.Row>
 
                 {/* Submit button */}
                 <Button 
                     block
-                    bsSize="large"
+                    
                     disabled={!validateForm()}
                     type="submit"
                 >

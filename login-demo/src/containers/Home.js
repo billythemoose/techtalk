@@ -5,8 +5,8 @@ export default function Home() {
   return (
     <div className="Home">
       <div className="lander">
-        <h1>Scratch</h1>
-        <p>A simple note taking app</p>
+        <h1>login-demo</h1>
+        <p>An app for demonstrating AWS Cognito</p>
       </div>
     </div>
   );
